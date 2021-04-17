@@ -1,54 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void arrows(int *a,int n){
-    stack<int> s;
-    stack<int> ans;
+class Solution
+{
+public:
+    vector<int> asteroidCollision(vector<int> &asteroids)
+    {
+        int n = asteroids.size();
+        stack<int> s;
 
-    for(int i=0;i<n;i++){
-        bool flag = true;
-        if(!s.empty()&& s.top()>0 &&a[i]<0){
-            while(!s.empty()&& s.top()>0 &&a[i]<0){
-                if(abs(a[i])==abs(s.top())){
+        for (int i = 0; i < asteroids.size(); i++)
+        {
+            int x = asteroids[i];
+            //Asteroids are moving in the negative direction
+            if (x < 0)
+            {
+                //If the left of asteroids(stack topmost element) moving in the positive direction
+                //but having magnitude less than the current asteroids, then it will destroy it.
+                while (!s.empty() && s.top() > 0 && abs(x) > s.top())
                     s.pop();
-                    flag=false;
-                    break;
-                }
-                else if(abs(a[i])>abs(s.top())){
+
+                //We will push current asteroid in only two condition
+                //1)If current asteroid destroy all the previous asteroid----> means (Empty stack)
+                //2)If current asteroid and rest of the asteroid are moving in the same direction (-ve)
+                if (s.empty() || s.top() < 0)
+                    s.push(x);
+
+                //if the current asteroid and the previous asteroid having the same magnitude, then both asteroid will destroy
+                else if (abs(x) == s.top())
                     s.pop();
-                    flag=true;
-                }
-                else if(abs(a[i])<abs(s.top())){
-                    flag=false;
-                    break;
-                }
             }
-            if(flag){
-                s.push(a[i]);
+            else
+            {
+                s.push(x);
             }
         }
-        else{
-            s.push(a[i]);
+        int len = s.size();
+        vector<int> ans(len);
+        int idx = len - 1;
+        while (!s.empty())
+        {
+            ans[idx--] = s.top();
+            s.pop();
         }
+        return ans;
     }
-
-    while(!s.empty()){
-        ans.push(s.top());
-        s.pop();
-    }
-    while(!ans.empty()){
-        cout<<ans.top()<<" ";
-        ans.pop();
-    }
-}
-
-int main(){
-    int n;
-    cin>>n;
-    int a[n];
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-    }
-
-    arrows(a,n);
-}
+};
