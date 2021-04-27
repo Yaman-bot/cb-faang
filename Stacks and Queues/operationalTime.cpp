@@ -49,13 +49,9 @@ vector<int> operation_time(int n, vector<string> &logs)
         prev_time = time;
 
         if (operation == "start")
-        {
             s.push(id);
-        }
         else
-        {
             s.pop();
-        }
     }
     return duration;
 }
