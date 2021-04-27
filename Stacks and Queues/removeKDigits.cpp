@@ -40,20 +40,14 @@ public:
         for (int i = 0; i < ans.size(); i++)
         {
             if (ans[i] == '0')
-            {
                 count++;
-            }
             else
-            {
                 break;
-            }
         }
 
         ans = ans.substr(count, ans.size() - count);
         if (ans == "")
-        {
             ans += "0";
-        }
 
         return ans;
     }
